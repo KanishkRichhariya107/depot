@@ -6,9 +6,9 @@ one:
   price: 9.99
 
 two:
-  title: YourString
+  title: MyString
   description: MyText
-  price: 9.99
+  price: 10.99
 
 pragprog:
   title: The Pragmatic Programmer
