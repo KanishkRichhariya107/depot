@@ -53,4 +53,11 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_select "table"
     assert_select "a", minimum: 1
   end
+  test "should not delete products referenced by line item" do
+    product = products(:two)
+    assert_raises ActiveRecord::RecordNotDestroyed do
+      product.destroy!
+    end
+    assert Product.exists?(product.id)
+  end
 end
