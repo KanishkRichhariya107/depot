@@ -1,7 +1,9 @@
 one:
   product: two
   cart: one
+  price: 20.33
 
 two:
   product: two
   cart: two
+  price: 22.33
