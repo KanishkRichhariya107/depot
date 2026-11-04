@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class LineItemsControllerTest < ActionDispatch::IntegrationTest
   test "should create line_item" do
