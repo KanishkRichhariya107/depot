@@ -1,6 +1,11 @@
 require "test_helper"
 
 class LineItemsControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    @line_item = line_items(:one)
+    login_as users(:one)
+  end
+
   test "should create line_item" do
     assert_difference("LineItem.count") do
       post line_items_url params: { product_id: products(:pragprog).id }

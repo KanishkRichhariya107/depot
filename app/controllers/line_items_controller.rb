@@ -1,4 +1,5 @@
 class LineItemsController < ApplicationController
+  allow_unauthenticated_access only: %i[ create ]
   before_action :set_cart, only: [ :create ]
   include CurrentCart
   def create
