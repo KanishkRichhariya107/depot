@@ -3,11 +3,14 @@ Rails.application.routes.draw do
   resources :users
   resource :session
   resources :passwords, param: :token
-  resources :line_items, only: [ :create ]
-  resources :orders, only: [ :new, :create ]
-  resources :carts
-  root "store#index", as: "store_index"
   resources :products
+  # locale is route parameter and paranthesis makes it optional
+  scope "(:locale)" do
+    resources :line_items, only: [ :create ]
+    resources :orders, only: [ :new, :create ]
+    resources :carts
+    root "store#index", as: "store_index", via: :all
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
