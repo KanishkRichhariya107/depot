@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "admin" => 'admin#index'
+  get "admin" => "admin#index"
   resources :users
   resource :session
   resources :passwords, param: :token

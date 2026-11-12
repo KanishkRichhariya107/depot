@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -19,9 +19,9 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
     get new_order_url
     assert_response :success
   end
-  test "should crete order" do 
+  test "should crete order" do
     assert_difference("Order.count") do
-      post orders_url, params:{
+      post orders_url, params: {
         order: {
           address: "123 Test Street",
           email: "test@example.com",

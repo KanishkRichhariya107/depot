@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class AdminControllerTest < ActionDispatch::IntegrationTest
   test "should get index if logged in as admin" do

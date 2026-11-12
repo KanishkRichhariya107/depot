@@ -7,7 +7,7 @@ class Order < ApplicationRecord
       line_items << item
     end
   end
-  enum :pay_type,{
+  enum :pay_type, {
     "Check" => 0,
     "Credit card" => 1,
     "Purchase order" => 2
