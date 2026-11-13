@@ -7,8 +7,7 @@ class Product < ApplicationRecord
   validates :price, numericality: true, allow_blank: true
   validates :title, uniqueness: true
   validate :acceptable_image
-  validates :permalink, uniqueness: true
-  validates :permalink, format: { with: /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+){2,}\z/, message: "must contain at least 3 words with hyphens in between" }
+  validates :permalink, uniqueness: true, format: { with: /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+){2,}\z/, message: "must contain at least 3 words with hyphens in between" }
   validate :description_length
   # validate :price_greater_than_discount_price
   validates :price, comparison: { greater_than: :discount_price }, if: -> { price.present? && discount_price.present? }
