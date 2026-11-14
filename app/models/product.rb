@@ -42,4 +42,12 @@ class Product < ApplicationRecord
       throw :abort
     end
   end
+
+  def set_default_title
+    self.title = "abc" if title.blank?
+  end
+
+  def set_discount_price_equals_to_price
+    self.discount_price = price if discount_price.nil?
+  end
 end
