@@ -11,6 +11,9 @@ class Product < ApplicationRecord
   validate :description_length
   # validate :price_greater_than_discount_price
   validates :price, comparison: { greater_than: :discount_price }, if: -> { price.present? && discount_price.present? }
+
+  after_initialize :set_default_title
+  before_validation :set_discount_price_equals_to_price
   def acceptable_image
     return unless image.attached?
 
@@ -41,5 +44,13 @@ class Product < ApplicationRecord
       errors.add(:base, "line items present")
       throw :abort
     end
+  end
+
+  def set_default_title
+    self.title = "abc" if title.blank?
+  end
+
+  def set_discount_price_equals_to_price
+    self.discount_price = price if discount_price.nil?
   end
 end
