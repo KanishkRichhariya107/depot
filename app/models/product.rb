@@ -4,7 +4,7 @@ class Product < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   after_commit -> { broadcast_refresh_later_to "products" }
   validates :title, :description, :image, presence: true
-  validates :price, numericality: true, allow_blank: true
+  validates :price, presence: true, numericality: { greater_than_or_equal_to: 0.01 }
   validates :title, uniqueness: true
   validate :acceptable_image
   validates :permalink, uniqueness: true, format: { with: /\A[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+){2,}\z/, message: "must contain at least 3 words with hyphens in between" }
