@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   validates :name, presence: true, uniqueness: true
-  validates :email_address, presence: true, uniqueness: true
+  validates :email_address, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/ }
   has_secure_password
   has_many :sessions, dependent: :destroy
 
