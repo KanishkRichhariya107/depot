@@ -1,7 +1,8 @@
 class Product < ApplicationRecord
   has_one_attached :image
-  has_many :line_items
-  before_destroy :ensure_not_referenced_by_any_line_item
+  has_many :line_items, dependent: :restrict_with_error
+  # before_destroy :ensure_not_referenced_by_any_line_item
+  has_many :carts, through: :line_items
   after_commit -> { broadcast_refresh_later_to "products" }
   validates :title, :description, :image, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0.01 }, price_greater_than_equal_discount_price: true

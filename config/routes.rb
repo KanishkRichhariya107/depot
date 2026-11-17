@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get "admin" => "admin#index"
+  get "users/orders", to: "users#orders", as: :users_orders
+  get "users/line_items", to: "users#line_items", as: :users_line_items
   resources :users
   resource :session
   resources :passwords, param: :token

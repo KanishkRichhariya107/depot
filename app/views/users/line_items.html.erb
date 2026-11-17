@@ -1,0 +1,41 @@
+<h1> My Ordered Items </h1>
+<% if @line_items.empty? %>
+  <p>You haven't ordered any items yet.</p>
+<% else %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+        <th>Order ID</th>
+        <th>Ordered On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @line_items.each do |item| %>
+        <tr>
+          <td><%= item.product.title %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.product.price) %></td>
+          <td><%= number_to_currency(item.total_price) %></td>
+          <td><%= item.order_id %></td>
+          <td><%= item.created_at.strftime("%d %B %Y") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<div>
+  <% if @page > 1 %>
+    <%= link_to "Previous", users_line_items_path(page: @page - 1) %>
+  <% end %>
+
+  Page <%= @page %> of <%= [@total_pages, 1].max %>
+
+  <% if @page < @total_pages %>
+    <%= link_to "Next", users_line_items_path(page: @page + 1) %>
+  <% end %>
+</div>
