@@ -11,6 +11,8 @@ class Product < ApplicationRecord
   validate :description_length
   # validate :price_greater_than_discount_price
   # validates :price, comparison: { greater_than: :discount_price }, if: -> { price.present? && discount_price.present? }
+  before_validation :set_default_title
+  after_validation :set_discount_price_equals_to_price
   def acceptable_image
     return unless image.attached?
 
