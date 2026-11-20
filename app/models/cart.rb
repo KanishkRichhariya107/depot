@@ -1,6 +1,6 @@
 class Cart < ApplicationRecord
   has_many :line_items, dependent: :destroy
-  has_many :prodcuts, through: :line_items
+  has_many :products, through: :line_items
   has_many :enabled_prodcuts, -> { where(enabled: true) }, through: :line_items, source: :product
   def add_product(product)
     current_item = line_items.find_by(product_id: product.id)
