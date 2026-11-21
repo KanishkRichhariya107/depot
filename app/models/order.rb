@@ -1,6 +1,10 @@
 require "pago"
 class Order < ApplicationRecord
   has_many :support_requests, dependent: :nullify
+  belongs_to :user, optional: true
+  def total_price
+    line_items.sum(&:total_price)
+  end
   def add_line_items_from_cart(cart)
     cart.line_items.each do |item|
       item.cart_id = nil

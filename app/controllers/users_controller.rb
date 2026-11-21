@@ -6,6 +6,19 @@ class UsersController < ApplicationController
     @users = User.order(:name)
   end
 
+  def orders
+    @orders = Current.user.orders
+  end
+
+  def line_items
+    @per_page = 5
+    @page = [ params[:page].to_i, 1 ].max
+
+    line_items = Current.user.line_items.includes(:product, :order).order(created_at: :desc, id: :desc)
+    @total_count = line_items.count
+    @total_pages = (@total_count.to_f / @per_page).ceil
+    @line_items = line_items.limit(@per_page).offset((@page - 1) * @per_page)
+  end
   # GET /users/1 or /users/1.json
   def show
   end
@@ -57,7 +70,7 @@ class UsersController < ApplicationController
     end
   end
 rescue_from "User::Error" do |exception|
-  redirect_to users_url, notice: exception.messagea
+  redirect_to users_url, notice: exception.message
 end
 
   private
