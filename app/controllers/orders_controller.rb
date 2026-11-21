@@ -1,8 +1,9 @@
 class OrdersController < ApplicationController
   include CurrentCart
-  # allow_unauthenticated_access only: %i[ new create ]
+  allow_unauthenticated_access only: %i[ new create ]
   before_action :set_cart, only: %i[new create]
   before_action :ensure_cart_isnt_empty, only: %i[new]
+  before_action :resume_session, only: %i[ new create ]
 
   def new
     @order = Order.new

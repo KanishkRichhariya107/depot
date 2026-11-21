@@ -3,7 +3,7 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\z/ }
   has_secure_password
   has_many :sessions, dependent: :destroy
-  has_many :orders
+  has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }

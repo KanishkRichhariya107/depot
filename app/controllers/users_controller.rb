@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     @per_page = 5
     @page = [ params[:page].to_i, 1 ].max
 
-    line_items = Current.user.line_items.includes(:product, :order)
+    line_items = Current.user.line_items.includes(:product, :order).order(created_at: :desc, id: :desc)
     @total_count = line_items.count
     @total_pages = (@total_count.to_f / @per_page).ceil
     @line_items = line_items.limit(@per_page).offset((@page - 1) * @per_page)
