@@ -2,6 +2,7 @@ require "pago"
 class Order < ApplicationRecord
   has_many :support_requests, dependent: :nullify
   belongs_to :user, optional: true
+  scope :by_date, ->(from = Date.current, to = Date.current + 1.days) { where(created_at: (from.to_date.beginning_of_day..to.to_date.next_day.beginning_of_day)) }
   def total_price
     line_items.sum(&:total_price)
   end

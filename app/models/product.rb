@@ -14,6 +14,9 @@ class Product < ApplicationRecord
   # validates :price, comparison: { greater_than_or_equal_to: :discount_price }, if: -> { price.present? && discount_price.present? }
   before_validation :set_default_title
   before_validation :set_discount_price_equals_to_price
+  scope :enabled_products, -> { where(enabled: true) }
+  scope :in_atleast_one_line_item, -> { where.associated(:line_items).distinct }
+  scope :titles_in_atleast_one_line_item, -> { in_atleast_one_line_item.pluck(:title) }
   def acceptable_image
     return unless image.attached?
 
