@@ -1,10 +1,11 @@
 class Product < ApplicationRecord
+  belongs_to :category, counter_cache: true
   has_one_attached :image
   has_many :line_items, dependent: :restrict_with_error
   # before_destroy :ensure_not_referenced_by_any_line_item
   has_many :carts, through: :line_items
   after_commit -> { broadcast_refresh_later_to "products" }
-  validates :title, :description, :image, presence: true
+  validates :title, :description, presence: true
   validates :price, presence: true, numericality: { greater_than_or_equal_to: 0.01 }, price_greater_than_equal_discount_price: true
   validates :title, uniqueness: true
   validate :acceptable_image
@@ -19,6 +20,25 @@ class Product < ApplicationRecord
 
   def self.titles_in_atleast_one_line_item
     in_atleast_one_line_item.pluck(:title)
+  end
+
+  after_create :update_parent_count
+  after_destroy :update_parent_count
+  after_update :update_parent_count, if: :saved_change_to_category_id?
+
+  def update_parent_count
+    ids = [category_id]
+
+    if saved_change_to_category_id?
+      ids << saved_change_to_category_id.first
+    end
+
+    ids.compact.uniq.each do |id|
+      category = Category.find(id)
+      next unless category
+      category.recalculate_products_count
+      category.parent.recalculate_products_count
+    end
   end
 
   def acceptable_image

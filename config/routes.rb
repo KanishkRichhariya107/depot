@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resources :products
   resources :support_requests, only: %i[ index update ]
+  resources :categories, only: %i[index]
   # locale is route parameter and paranthesis makes it optional
   scope "(:locale)" do
     resources :line_items, only: [ :create ]
