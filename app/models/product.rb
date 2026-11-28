@@ -1,4 +1,5 @@
 class Product < ApplicationRecord
+  belongs_to :category
   has_one_attached :image
   has_many :line_items, dependent: :restrict_with_error
   # before_destroy :ensure_not_referenced_by_any_line_item
@@ -19,6 +20,27 @@ class Product < ApplicationRecord
 
   def self.titles_in_atleast_one_line_item
     in_atleast_one_line_item.pluck(:title)
+  end
+
+  after_create :update_parent_count
+  after_destroy :update_parent_count
+  after_update :update_parent_count, if: :saved_change_to_category_id?
+
+  private
+
+  def update_parent_count
+    ids = [ category_id ]
+
+    if saved_change_to_category_id?
+      ids << saved_change_to_category_id.first
+    end
+
+    ids.compact.uniq.each do |id|
+      category = Category.find_by(id: id)
+      next unless category
+      category.recalculate_products_count
+      category.parent.recalculate_products_count if category.parent
+    end
   end
 
   def acceptable_image
@@ -43,8 +65,6 @@ class Product < ApplicationRecord
       errors.add(:price, "must be greater than discount price")
     end
   end
-
-  private
 
   def ensure_not_referenced_by_any_line_item
     unless line_items.empty?
