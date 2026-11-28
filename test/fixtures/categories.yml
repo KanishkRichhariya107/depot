@@ -2,8 +2,7 @@
 
 one:
   name: MyString
-  parent: one
 
 two:
-  name: MyString
-  parent: two
+  name: MYString2
+  parent: one
